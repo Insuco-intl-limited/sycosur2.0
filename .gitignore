@@ -1,0 +1,26 @@
+# Environnement
+.env
+.env.local
+.env.production
+*.env
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Données sensibles
+data/
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ODK Central sensible
+odk-central/.env
+odk-central/files/secrets/
