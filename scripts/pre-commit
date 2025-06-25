@@ -1,0 +1,16 @@
+#!/bin/sh
+echo "🔍 Vérification pré-commit..."
+
+# Vérifier fichiers sensibles
+if git diff --cached --name-only | grep -E "\.(env|key|pem)$"; then
+    echo "❌ ERREUR: Fichiers sensibles détectés"
+    exit 1
+fi
+
+# Vérifier docker-compose
+if ! docker-compose config -q 2>/dev/null; then
+    echo "❌ ERREUR: docker-compose.yml invalide"
+    exit 1
+fi
+
+echo "✅ Pré-commit validé"

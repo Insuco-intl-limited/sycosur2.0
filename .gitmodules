@@ -1,0 +1,9 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/Insuco-intl-limited/sycosur-backend.git
+[submodule "client"]
+	path = client
+	url = https://github.com/Insuco-intl-limited/sycosur-frontend.git
+[submodule "central"]
+	path = central
+	url = https://github.com/getodk/central.git
