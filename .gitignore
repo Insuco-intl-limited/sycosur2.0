@@ -1,5 +1,5 @@
 # Environnement
-.env
+.envs
 .env.local
 .env.production
 *.env
@@ -24,3 +24,6 @@ Thumbs.db
 # ODK Central sensible
 odk-central/.env
 odk-central/files/secrets/
+
+
+Makefile

@@ -19,6 +19,8 @@ fi
 
 python manage.py migrate --no-input
 python manage.py collectstatic --no-input
+# load admin interface config
+RUN python manage.py loaddata admin_interface_config.json
 
 # Créer un superuser si il n'existe pas
 python manage.py shell -c "

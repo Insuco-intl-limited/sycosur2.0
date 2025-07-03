@@ -28,11 +28,14 @@ collectstatic:
 superuser:
 	docker compose -f local.yml run --rm api python manage.py createsuperuser
 
+dump_admin:
+	docker compose -f local.yml run --rm api python manage.py dumpdata admin_interface --indent 2 > ./backend/admin_interface_config.json
+
 db-volume:
-	docker volume inspect api_estate_prod_postgres_data
+	docker volume inspect sycosur_postgres_data
 
 mailpit-volume:
-	docker volume inspect api_estate_prod_mailpit_data
+	docker volume inspect sycosur_mailpit_data
 
-estate-db:
-	docker compose -f local.yml exec postgres psql --username=alphaogilo --dbname=estate
+sycosur-db:
+	docker compose -f local.yml exec postgres psql --username=admin --dbname=sycosur
