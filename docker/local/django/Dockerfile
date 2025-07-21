@@ -67,10 +67,10 @@ RUN chmod +x /start-flower
 # Copy application code
 COPY --chown=django:django backend/ ${APP_HOME}
 
-# Create staticfiles directory with proper permissions AFTER copying code
-RUN mkdir -p ${APP_HOME}/staticfiles && \
+# Create staticfiles and media directories with proper permissions AFTER copying code
+RUN mkdir -p ${APP_HOME}/staticfiles ${APP_HOME}/media && \
   chown -R django:django ${APP_HOME} && \
-  chmod -R 755 ${APP_HOME}/staticfiles
+  chmod -R 755 ${APP_HOME}/staticfiles ${APP_HOME}/media
 
 USER django
 

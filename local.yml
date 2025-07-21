@@ -8,6 +8,7 @@ services:
     volumes:
       - ./backend/:/app:z
       - ./backend/staticfiles:/app/staticfiles
+      - ./backend/media:/app/media
     expose:
       - "8001"
     env_file:
@@ -106,6 +107,7 @@ services:
       - "8080:80"
     volumes:
       - ./backend/staticfiles:/app/staticfiles
+      - ./backend/media:/app/media
       - logs_store:/var/log/nginx
     depends_on:
       - api

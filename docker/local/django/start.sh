@@ -19,15 +19,16 @@ fi
 
 python manage.py migrate --no-input
 python manage.py collectstatic --no-input
+
 # load admin interface config
-RUN python manage.py loaddata admin_interface_config.json
+python manage.py loaddata admin_interface_config.json
 
 # Créer un superuser si il n'existe pas
 python manage.py shell -c "
 from django.contrib.auth import get_user_model
 User = get_user_model()
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@insuco.com', 'admin123')
+if not User.objects.filter(email='admin@insuco.com').exists():
+    User.objects.create_superuser('admin@insuco.com', 'admin123', 'admin')
     print('Superuser created')
 "
 exec python manage.py runserver 0.0.0.0:8001
