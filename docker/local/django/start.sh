@@ -17,6 +17,7 @@ if [ ! -f "manage.py" ]; then
     exit 1
 fi
 
+python manage.py makemigrations
 python manage.py migrate --no-input
 python manage.py collectstatic --no-input
 
@@ -28,7 +29,7 @@ python manage.py shell -c "
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(email='admin@insuco.com').exists():
-    User.objects.create_superuser('admin@insuco.com', 'admin123', 'admin')
+    User.objects.create_superuser('admin@insuco.com', 'admin123', 'admin', first_name='Mary', last_name='Jane')
     print('Superuser created')
 "
 exec python manage.py runserver 0.0.0.0:8001
