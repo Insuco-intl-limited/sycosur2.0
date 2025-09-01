@@ -51,7 +51,7 @@ staging:
 	$(MAKE) COMPOSE_FILE=staging.yml up
 
 prod:
-	$(MAKE) COMPOSE_FILE=production.yml up
+	$(MAKE) COMPOSE_FILE=prod.yml up
 
 # Afficher l'aide
 help:

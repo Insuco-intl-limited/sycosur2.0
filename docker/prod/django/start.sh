@@ -33,10 +33,16 @@ python manage.py migrate --no-input || {
 }
 
 # Collect static files with error handling
+echo "Collecting static files..."
+# Ensure staticfiles directory has correct permissions before collecting
+if [ -d "staticfiles" ]; then
+    chmod -R 777 staticfiles
+fi
 python manage.py collectstatic --no-input --clear || {
     echo "Error: Static files collection failed!"
     exit 1
 }
+echo "Static files collection completed successfully."
 
 # Load admin interface config
 python manage.py loaddata admin_interface_config.json || {

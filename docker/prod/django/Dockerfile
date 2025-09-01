@@ -69,9 +69,10 @@ COPY --chown=django:django backend/ ${APP_HOME}
 
 # Create staticfiles and media directories with proper permissions AFTER copying code
 RUN mkdir -p ${APP_HOME}/staticfiles ${APP_HOME}/media && \
-  chown -R django:django ${APP_HOME} && \
-  chmod -R 755 ${APP_HOME}/staticfiles ${APP_HOME}/media
+  chmod -R 777 ${APP_HOME}/staticfiles ${APP_HOME}/media && \
+  chown -R django:django ${APP_HOME}
 
+# Switch to django user for security
 USER django
 
 ENTRYPOINT [ "/entrypoint" ]
