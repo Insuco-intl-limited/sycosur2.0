@@ -1,4 +1,4 @@
-# Définir la variable avec une valeur par défaut
+	# Définir la variable avec une valeur par défaut
 COMPOSE_FILE ?= local.yml
 
 build:

@@ -1,0 +1,86 @@
+services:
+  api: &api
+    build:
+      context: .
+      dockerfile: ./docker/prod/django/Dockerfile
+    image: sycosur_api
+    container_name: sycosur_api
+    volumes:
+      - ./backend/:/app:z
+      - ./backend/staticfiles:/app/staticfiles
+      - ./backend/media:/app/media
+    expose:
+      - "8000"
+    env_file:
+      - ./backend/.envs/.env.prod
+    depends_on:
+      - postgres
+      - redis
+    command: /start
+    networks:
+      - reverseProxy_nw
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/prod/postgres/Dockerfile
+    image: sycosur_postgres
+    container_name: sycosur_postgres
+    volumes:
+      - sycosur_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./backend/.envs/.env.prod
+    networks:
+      - reverseProxy_nw
+
+  client:
+    build:
+      context: .
+      dockerfile: ./docker/prod/client/Dockerfile
+    container_name: sycosur_client
+    image: sycosur_client
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - reverseProxy_nw
+
+  redis:
+    image: redis:7.0-alpine3.19
+    command: redis-server --appendonly yes
+    container_name: sycosur_redis
+    volumes:
+      - sycosur_redis_data:/data
+    networks:
+      - reverseProxy_nw
+
+  celeryworker:
+    <<: *api
+    image: sycosur_celeryworker
+    container_name: sycosur_celeryworker
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *api
+    image: sycosur_celerybeat
+    container_name: sycosur_celerybeat
+    command: /start-celerybeat
+
+  flower:
+    <<: *api
+    image: sycosur_flower
+    container_name: sycosur_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+    volumes:
+      - sycosur_flower_data:/data
+
+networks:
+    reverseProxy_nw:
+        external: true
+
+volumes:
+  sycosur_postgres_data: {}
+  sycosur_redis_data: {}
+  sycosur_flower_data: {}

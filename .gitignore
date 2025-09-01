@@ -11,6 +11,8 @@ docker-compose.override.yml
 # Données sensibles
 data/
 logs/
+scripts/deploy.sh
+docs/
 *.log
 
 # OS
