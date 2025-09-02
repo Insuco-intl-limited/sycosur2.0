@@ -2,5 +2,5 @@
 
 set -o errexit
 set -o nounset
-
+cd /app
 exec celery -A config.celery_app worker -l INFO

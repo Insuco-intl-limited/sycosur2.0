@@ -71,6 +71,10 @@ COPY --chown=django:django ./docker/prod/django/celery/flower/start /start-flowe
 RUN sed -i 's/\r$//g' /start-flower
 RUN chmod +x /start-flower
 
+COPY --chown=django:django ./docker/prod/django/celery/beat/start /start-celerybeat
+RUN sed -i 's/\r$//g' /start-celerybeat
+RUN chmod +x /start-celerybeat
+
 # Copy the rest of the application code
 COPY --chown=django:django . ${APP_HOME}
 
