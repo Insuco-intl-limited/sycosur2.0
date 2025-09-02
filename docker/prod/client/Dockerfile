@@ -28,7 +28,7 @@ COPY --from=deps /app/node_modules ./node_modules
 
 COPY . ${APP_HOME}
 
-COPY ./client/env.prod .env.prod
+COPY .env.prod .env.prod
 
 RUN npm run build
 
