@@ -8,7 +8,10 @@ RUN apk add --no-cache libc6-compat
 ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY client/package.json ./
+COPY client/pnpm-lock.yaml* ./
+COPY client/yarn.lock* ./
+COPY client/package-lock.json* ./
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -28,7 +31,7 @@ COPY --from=deps /app/node_modules ./node_modules
 
 COPY . ${APP_HOME}
 
-COPY .env.prod .env.prod
+COPY ./client/.env.prod .env.prod
 
 RUN npm run build
 

@@ -35,7 +35,7 @@ services:
 
   client:
     build:
-      context: ./client
+      context: .
       dockerfile: ./docker/prod/client/Dockerfile
     container_name: sycosur_client
     image: sycosur_client
