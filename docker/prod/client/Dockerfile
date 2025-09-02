@@ -29,7 +29,7 @@ WORKDIR ${APP_HOME}
 
 COPY --from=deps /app/node_modules ./node_modules
 
-COPY . ${APP_HOME}
+COPY ./client/. ${APP_HOME}
 
 COPY ./client/.env.prod .env.prod
 
