@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libpq-dev
 
 # Copy requirements files
-COPY ./requirements /requirements
+COPY ./backend/requirements /requirements
 
 # Install Python dependencies into wheels directory
 RUN pip wheel --wheel-dir /wheels -r /requirements/${BUILD_ENVIRONMENT}.txt
@@ -36,9 +36,9 @@ WORKDIR ${APP_HOME}
 
 RUN addgroup --system django && \
     adduser --system --ingroup django django && \
-    mkdir -p ${APP_HOME}/staticfiles && \
-    chown django:django ${APP_HOME}/staticfiles &&\
-    chmod 775 ${APP_HOME}/staticfiles
+    mkdir -p ${APP_HOME}/staticfiles/streamfield && \
+    chown -R django:django ${APP_HOME}/staticfiles && \
+    chmod -R 775 ${APP_HOME}/staticfiles
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \

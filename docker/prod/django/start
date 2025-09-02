@@ -58,5 +58,6 @@ if not User.objects.filter(email='admin@insuco.com').exists():
     print('Superuser created')
 "
 
-# Start gunicorn
-exec gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - config.wsgi:application --chdir=/app
+NUM_WORKERS=${GUNICORN_WORKERS:-3}
+
+exec /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:8000 --chdir=/app --workers $NUM_WORKERS

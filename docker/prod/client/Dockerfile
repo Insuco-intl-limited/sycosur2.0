@@ -1,14 +1,14 @@
 FROM docker.io/node:20.11-alpine3.18 AS base
 
-FROM base AS node-build-stage
+# stage 1. Install dependencies only when needed
+FROM base AS deps
 
 RUN apk add --no-cache libc6-compat
 
-#COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+ARG APP_HOME=/app
+WORKDIR ${APP_HOME}
 
-COPY client/package*.json ./
-COPY client/yarn.lock* ./
-COPY client/pnpm-lock.yaml* ./
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -17,22 +17,42 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-FROM base AS node-run-stage
+# Stage 2 Rebuild the source code when needed
+
+FROM base AS builder
+ARG APP_HOME=/app
+WORKDIR ${APP_HOME}
+
+
+COPY --from=deps /app/node_modules ./node_modules
+
+COPY . ${APP_HOME}
+
+COPY ./client/env.prod .env.prod
+
+RUN npm run build
+
+# Stage 3: Create a production image. copy all the files and run next as a non root user
+FROM base AS runner
 
 ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
 
-#COPY --from=node-build-stage client/node_modules ./node_modules
-
-COPY ./client/ ${APP_HOME}
+ENV NODE_ENV=production
 
 RUN addgroup -g 1001 -S nodejs && \
   adduser -S nextjs -u 1001 -G nodejs
+
+COPY --from=builder /app/public ./public
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 RUN chown -R nextjs:nodejs ${APP_HOME}
 
 USER nextjs
 
-CMD [ "npm","run","dev"]
+ENV PORT 3000
 
+CMD HOSTNAME=client node server.js
 
