@@ -36,7 +36,7 @@ python manage.py migrate --no-input || {
 echo "Collecting static files..."
 # Ensure staticfiles directory has correct permissions before collecting
 if [ -d "staticfiles" ]; then
-    chmod -R 777 staticfiles
+    chmod -R 777 staticfiles || echo "Warning: Could not change permissions on staticfiles directory. This is normal if using volume mounts."
 fi
 python manage.py collectstatic --no-input --clear || {
     echo "Error: Static files collection failed!"
@@ -59,4 +59,4 @@ if not User.objects.filter(email='admin@insuco.com').exists():
 "
 
 # Start gunicorn
-exec gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 --access-logfile - --error-logfile - config.wsgi:application
+exec gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - config.wsgi:application --chdir=/app
