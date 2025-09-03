@@ -8,15 +8,23 @@ RUN apk add --no-cache libc6-compat
 ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
 
-COPY client/package.json ./
-COPY client/pnpm-lock.yaml* ./
-COPY client/yarn.lock* ./
-COPY client/package-lock.json* ./
+COPY ./client/package.json ./
+COPY ./client/pnpm-lock.yaml ./
 
 RUN \
+  echo "=== Available files ===" && ls -la && \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
+  elif [ -f pnpm-lock.yaml ]; then \
+    echo "=== Node/NPM versions ===" && \
+    node --version && npm --version && \
+    echo "=== Corepack check ===" && \
+    corepack --version && \
+    echo "=== Enabling pnpm ===" && \
+    corepack enable pnpm && \
+    pnpm --version && \
+    echo "=== Installing ===" && \
+    pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -29,7 +37,7 @@ WORKDIR ${APP_HOME}
 
 COPY --from=deps /app/node_modules ./node_modules
 
-COPY ./client/. ${APP_HOME}
+COPY ./client ${APP_HOME}
 
 COPY ./client/.env.prod .env.prod
 

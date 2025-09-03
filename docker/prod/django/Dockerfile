@@ -76,7 +76,7 @@ RUN sed -i 's/\r$//g' /start-celerybeat
 RUN chmod +x /start-celerybeat
 
 # Copy the rest of the application code
-COPY --chown=django:django . ${APP_HOME}
+COPY --chown=django:django ./backend ${APP_HOME}
 
 RUN chown django:django ${APP_HOME}
 
