@@ -56,9 +56,9 @@ COPY --chown=django:django ./docker/local/django/celery/worker/start.sh /start-c
 RUN sed -i 's/\r$//g' /start-celeryworker
 RUN chmod +x /start-celeryworker
 
-COPY --chown=django:django ./docker/local/django/celery/beat/start.sh /start-celerybeat
-RUN sed -i 's/\r$//g' /start-celerybeat
-RUN chmod +x /start-celerybeat
+#COPY --chown=django:django ./docker/local/django/celery/beat/start.sh /start-celerybeat
+#RUN sed -i 's/\r$//g' /start-celerybeat
+#RUN chmod +x /start-celerybeat
 
 COPY --chown=django:django ./docker/local/django/celery/flower/start.sh /start-flower
 RUN sed -i 's/\r$//g' /start-flower

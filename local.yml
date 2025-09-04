@@ -83,11 +83,11 @@ services:
     container_name: sycosur_celeryworker
     command: /start-celeryworker
 
-  celerybeat:
-    <<: *api
-    image: sycosur_celerybeat
-    container_name: sycosur_celerybeat
-    command: /start-celerybeat
+#  celerybeat:
+#    <<: *api
+#    image: sycosur_celerybeat
+#    container_name: sycosur_celerybeat
+#    command: /start-celerybeat
 
   flower:
     <<: *api
