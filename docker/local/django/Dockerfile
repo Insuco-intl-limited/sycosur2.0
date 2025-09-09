@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 COPY ./backend/requirements /requirements
 
-RUN pip wheel --wheel-dir /usr/src/app/wheels \
-  -r /requirements/${BUILD_ENVIRONMENT}.txt
+#RUN pip wheel --wheel-dir /usr/src/app/wheels -r /requirements/${BUILD_ENVIRONMENT}.txt
+RUN pip --default-timeout=100 wheel --wheel-dir /usr/src/app/wheels -r /requirements/${BUILD_ENVIRONMENT}.txt --retries 5
 
 # Stage 2: Python run stage.
 FROM python AS python-run-stage
@@ -75,3 +75,4 @@ RUN mkdir -p ${APP_HOME}/staticfiles ${APP_HOME}/media && \
 USER django
 
 ENTRYPOINT [ "/entrypoint" ]
+

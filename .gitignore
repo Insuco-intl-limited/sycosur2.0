@@ -12,8 +12,8 @@ docker-compose.override.yml
 data/
 logs/
 scripts/deploy.sh
-docs/
 *.log
+local.yml
 
 # OS
 .DS_Store
