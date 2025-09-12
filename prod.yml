@@ -7,7 +7,7 @@ services:
     container_name: sycosur_api
     volumes:
       - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
+      - media_volume:/app/media
     expose:
       - "8000"
     env_file:
