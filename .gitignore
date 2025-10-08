@@ -23,9 +23,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# ODK Central sensible
-odk-central/.env
-odk-central/files/secrets/
 
 
-Makefile
+deploy_*
